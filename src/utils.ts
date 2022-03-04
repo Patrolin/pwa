@@ -51,5 +51,10 @@ class Utils {
                 return "Unknown";
         }
     }
+    public static format(str: string, values: any[]): string {
+        return str.replace(/%(\d+)/g, (match: string, group1: string) => {
+            return String(values?.[+group1] ?? "");
+        });
+    }
 }
 export default Utils;
