@@ -1,6 +1,6 @@
 {
-  "id": "/",
-  "scope": "/",
+  "id": "/pwa/",
+  "scope": "/pwa/",
   "short_name": "PWA",
   "name": "PWA test project",
   "description": "Test project for Progressive Web Apps",
@@ -10,7 +10,7 @@
   "background_color": "#ffffff",
   "serviceworker": {
     "src": "serviceWorker.js",
-    "scope": "/"
+    "scope": "/pwa/"
   },
   "icons": [
     {
