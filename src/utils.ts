@@ -72,7 +72,8 @@ class Utils {
             return String(values?.[+group1] ?? "");
         });
     }
-    public static print(value: any): string {
+    public static print(value: any, depth = 1): string {
+        if (depth >= 3) return "";
         switch (value?.constructor?.name) {
             case "String":
                 return this.format("\"%0\"", [value]);
@@ -81,12 +82,13 @@ class Utils {
             case undefined:
                 return String(value);
             case "Array":
-                return this.format("[%0]", [value.map((v: any) => this.print(v)).join(", ")]);
+                return this.format("[%0]", [value.map((v: any) => this.print(v, depth+1)).join(", ")]);
             case "Set":
-                const valuesString = Array.from(value as Set<any>).map(v => this.print(v)).join(", ");
+                const valuesString = Array.from(value as Set<any>).map(v => this.print(v, depth+1)).join(", ");
                 return this.format("{%0}", [valuesString]);
             default:
-                const entriesString = Object.keys(value).map((k) => this.format("%0: %1", [this.print(k), this.print(value[k])])).join(", ")
+                if (value === window || value === document) return "";
+                const entriesString = Object.keys(value).map((k) => this.format("%0: %1", [this.print(k, depth+1), this.print(value[k], depth+1)])).join(", ")
                 return this.format("{%0}", [entriesString]);
         }
     }
