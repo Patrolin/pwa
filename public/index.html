@@ -28,7 +28,7 @@
         <script type="application/javascript">
             if ("serviceWorker" in navigator) {
                 window.addEventListener("load", function () {
-                    navigator.serviceWorker.register("serviceWorker.js", { scope: "/" }).then(
+                    navigator.serviceWorker.register("serviceWorker.js", { scope: "/pwa/" }).then(
                         function (registration) {
                             console.log("ServiceWorker registration successful with scope: ", registration.scope);
                         },

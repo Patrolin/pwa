@@ -8,6 +8,19 @@ declare global {
     }
 }
 
+export enum BrowserName {
+    Edge = "Edge",
+    Opera = "Opera",
+    SamsungInternet = "Samsung Internet",
+    Chrome = "Chrome",
+    Vivaldi = "Vivaldi",
+    Yandex = "Yandex",
+    Firefox = "Firefox",
+    Safari = "Safari",
+    InternetExplorer = "Internet Explorer",
+    Unknown = "Unknown",
+}
+
 class Utils {
     public static isDesktop(): Boolean {
         return window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -24,31 +37,34 @@ class Utils {
     public static isAndroid(): Boolean {
         return Boolean(/Android/i.test(window.navigator.userAgent));
     }
-    public static getBrowserName() {
+    public static isSamsung(): Boolean {
+        return Boolean(/SAMSUNG|Samsung|SGH-[I|N|T]|GT-[I|N]|SM-[A|N|P|T|Z]|SHV-E|SCH-[I|J|R|S]|SPH-L/i.test(window.navigator.userAgent));
+    }
+    public static getBrowserName(): BrowserName {
         const userAgent = window.navigator.userAgent;
         const vendor = window.navigator.vendor;
         switch (true) {
             case /Edge|Edg|EdgiOS/i.test(userAgent):
-                return "Edge";
+                return BrowserName.Edge;
             case /OPR|Opera/i.test(userAgent) && Boolean(window.opr):
-                return "Opera";
+                return BrowserName.Opera;
+            case /SamsungBrowser/i.test(userAgent):
+                return BrowserName.SamsungInternet;
             case /CriOS/i.test(userAgent):
             case /Chrome/i.test(userAgent) && vendor === "Google Inc." && this.isChromium():
-                return "Chrome";
+                return BrowserName.Chrome;
             case /Vivaldi/i.test(userAgent):
-                return "Vivaldi";
+                return BrowserName.Vivaldi;
             case /YaBrowser/i.test(userAgent):
-                return "Yandex";
+                return BrowserName.Yandex;
             case /Firefox|FxiOS/i.test(userAgent):
-                return "Firefox";
+                return BrowserName.Firefox;
             case /Safari/i.test(userAgent):
-                return "Safari";
+                return BrowserName.Safari;
             case /MSIE|Trident|IEMobile|WPDesktop/i.test(userAgent):
-                return "Internet Explorer";
-            case /SAMSUNG|Samsung|SGH-[I|N|T]|GT-[I|N]|SM-[A|N|P|T|Z]|SHV-E|SCH-[I|J|R|S]|SPH-L/i.test(userAgent):
-                return "Samsung Internet";
+                return BrowserName.InternetExplorer;
             default:
-                return "Unknown";
+                return BrowserName.Unknown;
         }
     }
     public static format(str: string, values: any[]): string {

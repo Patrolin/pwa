@@ -19,13 +19,13 @@ reportWebVitals();
 window.deferredInstallPrompt = null;
 
 window.addEventListener("beforeinstallprompt", (event) => {
-  console.log("beforeinstallprompt");
+  alert("beforeinstallprompt");
   event.preventDefault();
   window.deferredInstallPrompt = event;
   //showInstallPrompt();
 });
 window.addEventListener("appinstalled", () => {
-  console.log("appinstalled");
+  alert("appinstalled");
   //hideInstallPrompt();
   window.deferredInstallPrompt = null;
 });
