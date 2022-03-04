@@ -15,3 +15,17 @@ ReactDOM.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+window.deferredInstallPrompt = null;
+
+window.addEventListener("beforeinstallprompt", (event) => {
+  console.log("beforeinstallprompt");
+  event.preventDefault();
+  window.deferredInstallPrompt = event;
+  //showInstallPrompt();
+});
+window.addEventListener("appinstalled", () => {
+  console.log("appinstalled");
+  //hideInstallPrompt();
+  window.deferredInstallPrompt = null;
+});
