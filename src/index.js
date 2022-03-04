@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import Utils from './utils';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -19,7 +20,7 @@ reportWebVitals();
 window.deferredInstallPrompt = null;
 
 window.addEventListener("beforeinstallprompt", (event) => {
-  alert("beforeinstallprompt");
+  alert(`beforeinstallprompt ${Utils.print(event)}`);
   event.preventDefault();
   window.deferredInstallPrompt = event;
   //showInstallPrompt();

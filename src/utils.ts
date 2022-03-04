@@ -26,7 +26,7 @@ class Utils {
         return window.matchMedia("(hover: hover) and (pointer: fine)").matches;
     }
     public static isChromium(): Boolean {
-        return Boolean(window.chrome || navigator.userAgentData?.brands?.some(b => b.brand === "Google Chrome"));
+        return Boolean(window.chrome || (navigator.userAgentData?.brands ?? []).some(b => b.brand === "Google Chrome"));
     }
     public static isIpad(): Boolean {
         return Boolean(/iPad/i.test(window.navigator.userAgent));
@@ -71,6 +71,24 @@ class Utils {
         return str.replace(/%(\d+)/g, (match: string, group1: string) => {
             return String(values?.[+group1] ?? "");
         });
+    }
+    public static print(value: any): string {
+        switch (value?.constructor?.name) {
+            case "String":
+                return this.format("\"%0\"", [value]);
+            case "Number":
+            case "Boolean":
+            case undefined:
+                return String(value);
+            case "Array":
+                return this.format("[%0]", [value.map((v: any) => this.print(v)).join(", ")]);
+            case "Set":
+                const valuesString = Array.from(value as Set<any>).map(v => this.print(v)).join(", ");
+                return this.format("{%0}", [valuesString]);
+            default:
+                const entriesString = Object.keys(value).map((k) => this.format("%0: %1", [this.print(k), this.print(value[k])])).join(", ")
+                return this.format("{%0}", [entriesString]);
+        }
     }
 }
 export default Utils;
