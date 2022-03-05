@@ -17,13 +17,13 @@ function App() {
         isChromium: Utils.isChromium(),
     }
     const flagsSet = new Set(Object.entries(flags).filter(([flag, v]) => v).map(([flag, v]) => flag));
-    const VERSION = 9;
+    const VERSION = 10;
     return (
         <div className="App">
           <header className="App-header">
                 <img src={logo} className="App-logo" alt="logo" />
                 <p>
-                    Version {VERSION}, {Utils.getBrowserName()} {Utils.print(flagsSet)} <br />
+                    App version: {VERSION}, {Utils.getBrowserName()} {Utils.print(flagsSet)} <br />
                     window.chrome: {Utils.print(Boolean(window.chrome))} <br />
                     window.opr: {Utils.print(Boolean(window.opr))} <br />
                     brands: {Utils.print((navigator.userAgentData?.brands ?? []).map(b => b.brand))} <br />
@@ -69,6 +69,7 @@ function App() {
                                 <IconButton onClick={onClose}><CloseIcon /></IconButton>
                             </Dialog>;
                         case BrowserName.Opera:
+                            alert("Opera guidance");
                             return <Dialog open={true}>
                                 {/* TODO: add opera guidance image */}
                                 Opera guidance prompt
