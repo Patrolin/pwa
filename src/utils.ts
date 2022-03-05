@@ -8,7 +8,8 @@ declare global {
     interface Window {
         chrome: any | undefined,
         opr: any | undefined,
-        deferredInstallPrompt: BeforeInstallEventPrompt|null|undefined;
+        deferredInstallPrompt: BeforeInstallEventPrompt|null|undefined,
+        isAppInstalled: boolean,
     }
     interface Navigator {
         userAgentData: { brands: { brand: string }[] } | undefined,
@@ -16,6 +17,7 @@ declare global {
 }
 
 window.deferredInstallPrompt = null;
+window.isAppInstalled = false;
 
 window.addEventListener("beforeinstallprompt", (event) => {
   alert(`beforeinstallprompt ${Utils.print(event)}`);
@@ -25,7 +27,7 @@ window.addEventListener("beforeinstallprompt", (event) => {
 });
 window.addEventListener("appinstalled", () => {
   alert("appinstalled");
-  window.deferredInstallPrompt = null;
+  window.isAppInstalled = true;
 });
 
 export enum BrowserName {
@@ -47,6 +49,9 @@ class Utils {
     }
 
     // Add to homescreen
+    public static isAppInstalled() {
+        return window.isAppInstalled;
+    }
     public static getNativeInstallPrompt() {
         return window.deferredInstallPrompt;
     }
