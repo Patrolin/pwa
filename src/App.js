@@ -34,14 +34,14 @@ function App() {
                 <div style={{ display: "flex", gap: 8 }}>
                     <Button variant="contained" color="primary" onClick={async () => {
                         Utils.showNativeInstallPromptIfExists(true);
-                    }}>Install</Button>
+                    }}>Native install</Button>
                     <Button variant="contained" color="primary" onClick={() => {
                         // eslint-disable-next-line
                         window.location.href = window.location.href;
                     }}>Reload page</Button>
                     <Button variant="contained" color="primary" onClick={() => {
                         localStorage.removeItem("AddToHomeScreen");
-                    }}>Reset AddToHomeScreenData</Button>
+                    }}>Reset data</Button>
                 </div>
             </header>
             <AddToHomescreen
