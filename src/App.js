@@ -17,7 +17,7 @@ function App() {
         isChromium: Utils.isChromium(),
     }
     const flagsSet = new Set(Object.entries(flags).filter(([flag, v]) => v).map(([flag, v]) => flag));
-    const VERSION = 12;
+    const VERSION = 13;
     return (
         <div className="App">
           <header className="App-header">
@@ -73,7 +73,6 @@ function App() {
                                 <IconButton onClick={onClose}><CloseIcon /></IconButton>
                             </Dialog>;
                         case BrowserName.Opera:
-                            alert("Opera guidance");
                             return <Dialog open={true}>
                                 {/* TODO: add opera guidance image */}
                                 Opera guidance prompt
