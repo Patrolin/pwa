@@ -23,7 +23,8 @@ function App() {
           <header className="App-header">
                 <img src={logo} className="App-logo" alt="logo" />
                 <p>
-                    App version: {VERSION}, {Utils.getBrowserName()} {Utils.print(flagsSet)} <br />
+                    App version: {VERSION} <br />
+                    {Utils.getBrowserName()} {Utils.print(flagsSet)} <br />
                     window.chrome: {Utils.print(Boolean(window.chrome))} <br />
                     window.opr: {Utils.print(Boolean(window.opr))} <br />
                     brands: {Utils.print((navigator.userAgentData?.brands ?? []).map(b => b.brand))} <br />
