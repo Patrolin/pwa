@@ -4,6 +4,7 @@ import Utils, { BeforeInstallEventPrompt } from "./utils";
 type AddToHomescreenData = {
     pageVisits: number,
     dismissCount: number,
+    version: number,
 }
 function useAddToHomeScreenData(
     defaultData: AddToHomescreenData,
@@ -13,10 +14,9 @@ function useAddToHomeScreenData(
         const __data = localStorage.getItem("AddToHomeScreen");
         if (Utils.isValueMissing(__data)) return defaultData;
         try {
-            return {
-                ...defaultData,
-                ...JSON.parse(__data!),
-            };
+            const _parsed_data = JSON.parse(__data!);
+            if (_parsed_data.version !== defaultData.version) return defaultData;
+            return { ...defaultData, ..._parsed_data };
         } catch (error) {
             return defaultData;
         }

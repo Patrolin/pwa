@@ -39,7 +39,7 @@ function App() {
                 </div>
             </header>
             <AddToHomescreen
-                defaultData={{ pageVisits: 0, dismissCount: 0 }}
+                defaultData={{ pageVisits: 0, dismissCount: 0, version: 1 }}
                 getShouldShowAdvert={(data) => {
                     if (data.dismissCount >= 20) return false;
                     return data.pageVisits >= (3**(data.dismissCount + 1));
@@ -76,7 +76,6 @@ function App() {
                             return undefined;
                     }
                 }}
-                forceShowAdvert
             />
         </div>
     );
