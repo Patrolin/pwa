@@ -1,6 +1,7 @@
+export type BeforeInstallEventPromptOutcome = "accepted"|"dismissed";
 export type BeforeInstallEventPrompt = {
     prompt: () => void,
-    userChoice: Promise<{ outcome: string }>;
+    userChoice: Promise<{ outcome: BeforeInstallEventPromptOutcome }>;
 }
 
 declare global {
@@ -57,6 +58,7 @@ class Utils {
         const { outcome } = await nativeInstallPrompt!.userChoice;
         if (verbose) alert(`Install outcome: ${Utils.print(outcome)}`);
         window.deferredInstallPrompt = null;
+        return outcome;
     }
 
     public static isDesktop(): boolean {

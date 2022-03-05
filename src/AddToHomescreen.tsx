@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import Utils, { BeforeInstallEventPrompt } from "./utils";
+import Utils, { BeforeInstallEventPrompt, BeforeInstallEventPromptOutcome } from "./utils";
 
 type AddToHomescreenData = {
     pageVisits: number,
@@ -63,12 +63,19 @@ export const AddToHomescreen: React.FC<Props> = ({ defaultData, getShouldShowAdv
     const [shouldShowGuidancePrompt, setShouldShowGuidancePrompt] = useState(false);
     // advert
     const advertYesCallback = useCallback(() => {
-        if (!Utils.isValueMissing(nativePrompt)) {
-            Utils.showNativeInstallPromptIfExists();
-        } else {
-            setShouldShowGuidancePrompt(true);
-        }
-        setData({ ...data, dismissCount: data.dismissCount + 1 });
+        const asyncCallback = async () => {
+            let outcome: BeforeInstallEventPromptOutcome|undefined = undefined;
+            if (!Utils.isValueMissing(nativePrompt)) {
+                outcome = await Utils.showNativeInstallPromptIfExists();
+            } else {
+                setShouldShowGuidancePrompt(true);
+                outcome = "dismissed";
+            }
+            if (outcome === "accepted") {
+                setData({ ...data, dismissCount: data.dismissCount + 1 });
+            }
+        };
+        asyncCallback();
     }, [data, setData, nativePrompt]);
     const advertNoCallback = useCallback(() => {
         setData({ ...data, dismissCount: data.dismissCount + 1 });
