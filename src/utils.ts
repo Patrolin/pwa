@@ -127,7 +127,7 @@ class Utils {
             case "String":
                 return this.format("\"%0\"", [value]);
             case "Number":
-            case "boolean":
+            case "Boolean":
             case undefined:
                 return String(value);
             case "Array":
