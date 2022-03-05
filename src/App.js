@@ -9,11 +9,12 @@ import CloseIcon from '@material-ui/icons/Close';
 function App() {
     const flags = {
         isDesktop: Utils.isDesktop(),
-        isChromium: Utils.isChromium(),
+        isAndroid: Utils.isAndroid(),
+        isIos: Utils.isIos(),
         isIpad: Utils.isIpad(),
         isIphone: Utils.isIphone(),
-        isAndroid: Utils.isAndroid(),
         isSamsung: Utils.isSamsung(),
+        isChromium: Utils.isChromium(),
     }
     const flagsSet = new Set(Object.entries(flags).filter(([flag, v]) => v).map(([flag, v]) => flag));
     const VERSION = 9;
