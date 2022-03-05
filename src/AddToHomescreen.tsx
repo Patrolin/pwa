@@ -29,7 +29,7 @@ function useAddToHomeScreenData(
         console.log("AddToHomeScreen", data);
         alert(`AddToHomeScreenData: ${Utils.print(data)}`);
         localStorage.setItem("AddToHomeScreen", JSON.stringify(data));
-        setShouldShowAdvert(getShouldShowAdvert(data))
+        setShouldShowAdvert(getShouldShowAdvert(data));
     }, [data, getShouldShowAdvert]);
     return [data, setData, shouldShowAdvert];
 }
@@ -53,14 +53,14 @@ export const AddToHomescreen: React.FC<Props> = ({ defaultData, getShouldShowAdv
     const [canShowPrompt, setCanShowPrompt] = useState(false);
     useEffect(() => {
         setTimeout(() => {
+            if (Utils.isDesktop() || Utils.isAppInstalled()) return;
             const newNativePrompt = Utils.getNativeInstallPrompt();
             setNativePrompt(newNativePrompt);
             const canShowNativePrompt = !Utils.isValueMissing(newNativePrompt);
             const canShowGuidancePrompt = !Utils.isValueMissing(guidancePrompt);
-            const newCanShowPrompt = !Utils.isDesktop() && (canShowNativePrompt || canShowGuidancePrompt) && !Utils.isAppInstalled();
-            setCanShowPrompt(newCanShowPrompt);
+            setCanShowPrompt(canShowNativePrompt || canShowGuidancePrompt);
         }, 1000);
-    })
+    });
     const [shouldShowGuidancePrompt, setShouldShowGuidancePrompt] = useState(false);
     // advert
     const advertYesCallback = useCallback(() => {
