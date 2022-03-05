@@ -38,6 +38,9 @@ function App() {
                         // eslint-disable-next-line
                         window.location.href = window.location.href;
                     }}>Reload page</Button>
+                    <Button variant="contained" color="primary" onClick={() => {
+                        localStorage.removeItem("AddToHomeScreen");
+                    }}>Reset AddToHomeScreenData</Button>
                 </div>
             </header>
             <AddToHomescreen
