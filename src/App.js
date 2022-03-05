@@ -16,7 +16,7 @@ function App() {
         isSamsung: Utils.isSamsung(),
     }
     const flagsSet = new Set(Object.entries(flags).filter(([flag, v]) => v).map(([flag, v]) => flag));
-    const VERSION = 6;
+    const VERSION = 7;
     return (
         <div className="App">
           <header className="App-header">
