@@ -25,8 +25,8 @@ function App() {
                 <p>
                     App version: {VERSION} <br />
                     {Utils.getBrowserName()} {Utils.print(flagsSet)} <br />
-                    window.chrome: {Utils.print(Boolean(window.chrome))} <br />
-                    window.opr: {Utils.print(Boolean(window.opr))} <br />
+                    window.chrome: {Utils.print(!!window.chrome)} <br />
+                    window.opr: {Utils.print(!!window.opr)} <br />
                     brands: {Utils.print((navigator.userAgentData?.brands ?? []).map(b => b.brand))} <br />
                     vendor: {Utils.print(window.navigator.vendor)} <br />
                     userAgent: {Utils.print(window.navigator.userAgent)} <br />
