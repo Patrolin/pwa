@@ -22,21 +22,14 @@ function useAddToHomeScreenData(
         }
     // eslint-disable-next-line
     }, []);
-    const [shouldShowAdvert, shouldIncrementPageVisits] = useMemo(() => {
-        const currentShouldShowAdvert = getShouldShowAdvert(_data);
-        if (currentShouldShowAdvert) {
-            return [true, false];
-        } else {
-            const nextShouldShowAdvert = getShouldShowAdvert({ ..._data, pageVisits: _data.pageVisits + 1 });
-            return [nextShouldShowAdvert, true];
-        }
-    }, [getShouldShowAdvert, _data]);
+    const shouldIncrementPageVisits = !getShouldShowAdvert(_data);
     const [data, setData] = useState({ ..._data, pageVisits: _data.pageVisits + (shouldIncrementPageVisits ? 1 : 0) });
+    const [shouldShowAdvert, setShouldShowAdvert] = useState(false);
     useEffect(() => {
         console.log("AddToHomeScreen", data);
-        alert(Utils.print(data));
         localStorage.setItem("AddToHomeScreen", JSON.stringify(data));
-    }, [data]);
+        setShouldShowAdvert(getShouldShowAdvert(data))
+    }, [data, getShouldShowAdvert]);
     return [data, setData, shouldShowAdvert];
 }
 
