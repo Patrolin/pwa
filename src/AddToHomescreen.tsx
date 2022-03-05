@@ -27,6 +27,7 @@ function useAddToHomeScreenData(
     const [shouldShowAdvert, setShouldShowAdvert] = useState(false);
     useEffect(() => {
         console.log("AddToHomeScreen", data);
+        alert(`AddToHomeScreenData: ${Utils.print(data)}`);
         localStorage.setItem("AddToHomeScreen", JSON.stringify(data));
         setShouldShowAdvert(getShouldShowAdvert(data))
     }, [data, getShouldShowAdvert]);
