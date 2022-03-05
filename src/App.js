@@ -54,7 +54,7 @@ function App() {
                     return <div style={{ boxSizing: "border-box", position: "fixed", bottom: 0, width: "100%", display: "flex", justifyContent: "space-between", padding: "8px 4px 8px 20px", background: "#fff" }}>
                         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                             <AndroidIcon />
-                            <Button onClick={onYes}>Přidat aplikaci pwa na plochu</Button>
+                            <Button color="primary" onClick={onYes}>Přidat aplikaci pwa na plochu</Button>
                         </div>
                         <IconButton onClick={onNo}><CloseIcon /></IconButton>
                     </div>;
