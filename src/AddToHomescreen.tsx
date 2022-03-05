@@ -57,9 +57,7 @@ export const AddToHomescreen: React.FC<Props> = ({ defaultData, getShouldShowAdv
             setNativePrompt(newNativePrompt);
             const canShowNativePrompt = !Utils.isValueMissing(newNativePrompt);
             const canShowGuidancePrompt = !Utils.isValueMissing(guidancePrompt);
-            const isAppInstalled = Utils.isAppInstalled();
-            if (isAppInstalled) setData(defaultData);
-            const newCanShowPrompt = !Utils.isDesktop() && (canShowNativePrompt || canShowGuidancePrompt) && !isAppInstalled;
+            const newCanShowPrompt = !Utils.isDesktop() && (canShowNativePrompt || canShowGuidancePrompt) && !Utils.isAppInstalled();
             setCanShowPrompt(newCanShowPrompt);
         }, 1000);
     })

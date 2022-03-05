@@ -17,7 +17,7 @@ function App() {
         isChromium: Utils.isChromium(),
     }
     const flagsSet = new Set(Object.entries(flags).filter(([flag, v]) => v).map(([flag, v]) => flag));
-    const VERSION = 10;
+    const VERSION = 11;
     return (
         <div className="App">
           <header className="App-header">

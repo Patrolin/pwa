@@ -13,21 +13,17 @@ declare global {
     }
     interface Navigator {
         userAgentData: { brands: { brand: string }[] } | undefined,
+        standalone: any,
     }
 }
 
 window.deferredInstallPrompt = null;
-window.isAppInstalled = false;
 
 window.addEventListener("beforeinstallprompt", (event) => {
   alert(`beforeinstallprompt ${Utils.print(event)}`);
   event.preventDefault();
   // @ts-ignore
   window.deferredInstallPrompt = event;
-});
-window.addEventListener("appinstalled", () => {
-  alert("appinstalled");
-  window.isAppInstalled = true;
 });
 
 export enum BrowserName {
@@ -50,7 +46,11 @@ class Utils {
 
     // Add to homescreen
     public static isAppInstalled() {
-        return window.isAppInstalled;
+        // iOS
+        if (window.navigator.standalone) return true;
+        // Android
+        if (window.matchMedia('(display-mode: standalone)').matches) return true;
+        return false;
     }
     public static getNativeInstallPrompt() {
         return window.deferredInstallPrompt;
