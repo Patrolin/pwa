@@ -93,7 +93,7 @@ class Utils {
         switch (true) {
             case /Edge|Edg|EdgiOS/i.test(userAgent):
                 return BrowserName.Edge;
-            case /OPR|Opera/i.test(userAgent) && Boolean(window.opr):
+            case /OPR|Opera/i.test(userAgent) || Boolean(window.opr):
                 return BrowserName.Opera;
             case /SamsungBrowser/i.test(userAgent):
                 return BrowserName.SamsungInternet;
