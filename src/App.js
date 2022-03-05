@@ -16,12 +16,13 @@ function App() {
         isSamsung: Utils.isSamsung(),
     }
     const flagsSet = new Set(Object.entries(flags).filter(([flag, v]) => v).map(([flag, v]) => flag));
+    const VERSION = 6;
     return (
         <div className="App">
           <header className="App-header">
                 <img src={logo} className="App-logo" alt="logo" />
                 <p>
-                    Version 5, {Utils.getBrowserName()} {Utils.print(flagsSet)} <br />
+                    Version {VERSION}, {Utils.getBrowserName()} {Utils.print(flagsSet)} <br />
                     window.chrome: {Utils.print(Boolean(window.chrome))} <br />
                     window.opr: {Utils.print(Boolean(window.opr))} <br />
                     brands: {Utils.print((navigator.userAgentData?.brands ?? []).map(b => b.brand))} <br />
@@ -39,7 +40,7 @@ function App() {
                 </div>
             </header>
             <AddToHomescreen
-                defaultData={{ pageVisits: 0, dismissCount: 0, version: 2 }}
+                defaultData={{ pageVisits: 0, dismissCount: 0, version: VERSION }}
                 getShouldShowAdvert={(data) => {
                     if (data.dismissCount >= 20) return false;
                     return data.pageVisits >= (3**(data.dismissCount + 1));
