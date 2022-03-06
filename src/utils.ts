@@ -6,7 +6,7 @@ declare global {
     interface Navigator {
         userAgentData: {
             brands: { brand: string }[],
-            mobile: boolean,
+            mobile: boolean, // broken, don't use
             platform: string,
         } | undefined,
     }
@@ -45,7 +45,7 @@ class Utils {
 
     // Add to homescreen
     public static isDesktop(): boolean {
-        return (window.navigator.userAgentData?.mobile === false) || window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+        return window.matchMedia("(hover: hover) and (pointer: fine)").matches;
     }
     public static getOsName(): OsName {
         const userAgent = window.navigator.userAgent;

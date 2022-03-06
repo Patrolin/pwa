@@ -23,7 +23,7 @@ function App() {
         isDesktop: Utils.isDesktop(),
     }
     const flagsSet = new Set(Object.entries(flags).filter(([flag, v]) => v).map(([flag, v]) => flag));
-    const VERSION = 16;
+    const VERSION = 17;
     return (
         <div className="App">
           <header className="App-header">
