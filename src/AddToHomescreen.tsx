@@ -41,7 +41,7 @@ function isAppInstalled(): boolean {
     // iOS
     if (window.navigator.standalone) return true;
     // Android
-    if (window.matchMedia('(display-mode: standalone)').matches) return true;
+    if (window.matchMedia('(display-mode: standalone)').matches || document.referrer.startsWith("android-app://")) return true;
     return false;
 }
 

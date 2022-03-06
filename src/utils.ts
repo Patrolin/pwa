@@ -15,6 +15,7 @@ export enum OsName {
     Android = "Android",
     Ipad = "Ipad",
     Iphone = "Iphone",
+    Blackberry = "Blackberry",
     Windows = "Windows",
     Mac = "Mac",
     Linux = "Linux",
@@ -53,6 +54,8 @@ class Utils {
                 return OsName.Ipad;
             case /iPhone|iPod/i.test(userAgent) || /iPhone|iPod/i.test(platform):
                 return OsName.Iphone;
+            case /BlackBerry/i.test(userAgent):
+                return OsName.Blackberry;
             case /Win32|Win64|WinCE|Windows/i.test(platform):
                 return OsName.Windows;
             case /Macintosh|MacIntel|MacPPC|Mac68K|Darwin/i.test(platform):
