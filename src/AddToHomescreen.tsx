@@ -17,7 +17,7 @@ declare global {
 
 window.deferredInstallPrompt = null;
 window.addEventListener("beforeinstallprompt", (event) => {
-  alert(`beforeinstallprompt ${Utils.print(event)}`);
+  alert(`beforeinstallprompt: ${Utils.print(event)}`);
   event.preventDefault();
   // @ts-ignore
   window.deferredInstallPrompt = event;
