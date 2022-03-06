@@ -118,7 +118,7 @@ class Utils {
                 if (depth >= MAX_DEPTH || value === window || value === document) return "{...}";
                 const keys = [
                     ...Object.entries(Object.getOwnPropertyDescriptors(value)).filter(([k, d]) => d.enumerable).map(([k, d]) => k),
-                    ...Object.entries(Object.getOwnPropertyDescriptors(value.__proto__)).filter(([k, d]) => d.enumerable).map(([k, d]) => k),
+                    ...Object.entries(Object.getOwnPropertyDescriptors(value.constructor?.prototype ?? {})).filter(([k, d]) => d.enumerable).map(([k, d]) => k),
                 ].flat();
                 const entriesString = keys.map((k) => this.format("%0: %1", [this.print(k, depth+1), this.print(value[k], depth+1)])).join(", ");
                 return this.format("{%0}", [entriesString]);
