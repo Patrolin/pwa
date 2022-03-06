@@ -18,6 +18,7 @@ export enum OsName {
     Blackberry = "Blackberry",
     Windows = "Windows",
     Mac = "Mac",
+    // generic
     Linux = "Linux",
     Unknown = "Unknown",
 }
@@ -31,6 +32,7 @@ export enum BrowserName {
     Firefox = "Firefox",
     Safari = "Safari",
     InternetExplorer = "Internet Explorer",
+    // generic
     Chromium = "Chromium",
     Unknown = "Unknown",
 }

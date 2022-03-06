@@ -55,7 +55,7 @@ function useAddToHomeScreenData(
     getShouldShowAdvert: (data: AddToHomescreenData) => boolean,
 ): [AddToHomescreenData, (data: AddToHomescreenData) => void, boolean] {
     const _data = useMemo<AddToHomescreenData>(() => {
-        const __data = localStorage.getItem("AddToHomeScreen");
+        const __data = localStorage.getItem("AddToHomescreen");
         if (isValueMissing(__data)) return defaultData;
         try {
             const _parsed_data = JSON.parse(__data!);
@@ -70,9 +70,9 @@ function useAddToHomeScreenData(
     const [data, setData] = useState({ ..._data, pageVisits: _data.pageVisits + (shouldIncrementPageVisits ? 1 : 0) });
     const [shouldShowAdvert, setShouldShowAdvert] = useState(false);
     useEffect(() => {
-        console.log("AddToHomeScreen", data);
-        alert(`AddToHomeScreenData: ${Utils.print(data)}`);
-        localStorage.setItem("AddToHomeScreen", JSON.stringify(data));
+        console.log("AddToHomescreen", data);
+        alert(`AddToHomescreen: ${Utils.print(data)}`);
+        localStorage.setItem("AddToHomescreen", JSON.stringify(data));
         setShouldShowAdvert(getShouldShowAdvert(data));
     }, [data, getShouldShowAdvert]);
     return [data, setData, shouldShowAdvert];

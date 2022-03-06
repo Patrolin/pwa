@@ -53,7 +53,7 @@ function App() {
                         window.location.href = window.location.href;
                     }}>Reload page</Button>
                     <Button variant="contained" color="primary" onClick={() => {
-                        localStorage.removeItem("AddToHomeScreen");
+                        localStorage.removeItem("AddToHomescreen");
                     }}>Reset data</Button>
                 </div>
             </header>
