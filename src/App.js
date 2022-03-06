@@ -11,7 +11,7 @@ function App() {
         isDesktop: Utils.isDesktop(),
     }
     const flagsSet = new Set(Object.entries(flags).filter(([flag, v]) => v).map(([flag, v]) => flag));
-    const VERSION = 14;
+    const VERSION = 15;
     return (
         <div className="App">
           <header className="App-header">
@@ -61,23 +61,45 @@ function App() {
                     </div>;
                 }}
                 getGuidancePrompt={(onClose) => {
-                    switch (Utils.getOsName()) {
+                    const osName = Utils.getOsName();
+                    const browserName = Utils.getBrowserName();
+                    switch (osName) {
                         case OsName.Ipad:
                         case OsName.Iphone:
-                            // TODO: add ios guidance images
-                            return;
-                        default:
-                            switch (Utils.getBrowserName()) {
+                            switch (browserName) {
                                 case BrowserName.Firefox:
                                     return <Dialog open={true}>
-                                        {/* TODO: add firefox guidance image */}
-                                        Firefox guidance prompt
+                                        {/* TODO: add ios firefox guidance image */}
+                                        Ios Firefox guidance prompt
+                                        <IconButton onClick={onClose}><CloseIcon /></IconButton>
+                                    </Dialog>;
+                                case BrowserName.Chrome:
+                                    return <Dialog open={true}>
+                                        {/* TODO: add ios chrome guidance image */}
+                                        Ios Chrome guidance prompt
+                                        <IconButton onClick={onClose}><CloseIcon /></IconButton>
+                                    </Dialog>;
+                                case BrowserName.Safari:
+                                    return <Dialog open={true}>
+                                        {/* TODO: add ios safari guidance image */}
+                                        Ios Safari guidance prompt
+                                        <IconButton onClick={onClose}><CloseIcon /></IconButton>
+                                    </Dialog>;
+                                default:
+                                    return undefined;
+                            }
+                        default:
+                            switch (browserName) {
+                                case BrowserName.Firefox:
+                                    return <Dialog open={true}>
+                                        {/* TODO: add android firefox guidance image */}
+                                        Android Firefox guidance prompt
                                         <IconButton onClick={onClose}><CloseIcon /></IconButton>
                                     </Dialog>;
                                 case BrowserName.Opera:
                                     return <Dialog open={true}>
-                                        {/* TODO: add opera guidance image */}
-                                        Opera guidance prompt
+                                        {/* TODO: add android opera guidance image */}
+                                        Android Opera guidance prompt
                                         <IconButton onClick={onClose}><CloseIcon /></IconButton>
                                     </Dialog>;
                                 default:
