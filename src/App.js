@@ -23,20 +23,23 @@ function App() {
         isDesktop: Utils.isDesktop(),
     }
     const flagsSet = new Set(Object.entries(flags).filter(([flag, v]) => v).map(([flag, v]) => flag));
-    const VERSION = 15;
+    const VERSION = 16;
     return (
         <div className="App">
           <header className="App-header">
                 <img src={logo} className="App-logo" alt="logo" />
                 <p>
-                    App version: {VERSION} <br />
-                    {Utils.getOsName()} {Utils.getBrowserName()} {Utils.print(flagsSet)} <br />
-                    userAgentData.platform: {Utils.print(window.navigator.userAgentData?.platform)} <br />
-                    platform: {Utils.print(window.navigator.platform)} <br />
-                    window.chrome: {Utils.print(!!window.chrome)} <br />
-                    window.opr: {Utils.print(!!window.opr)} <br />
-                    brands: {Utils.print((navigator.userAgentData?.brands ?? []).map(b => b.brand))} <br />
-                    userAgent: {Utils.print(window.navigator.userAgent)} <br />
+                    App version: {VERSION}, {Utils.getOsName()} {Utils.getBrowserName()} {Utils.print(flagsSet)} <br />
+                    desktop media: {Utils.print(window.matchMedia("(hover: hover) and (pointer: fine)").matches)}, window.chrome: {Utils.print(!!window.chrome)}, window.opr: {Utils.print(!!window.opr)} <br />
+                    userAgentData: {Utils.print({
+                        platform: window.navigator.userAgentData?.platform,
+                        mobile: window.navigator.userAgentData?.mobile,
+                        brands: (window.navigator.userAgentData?.brands ?? []).map(b => b.brand),
+                    })} <br />
+                    navigator: {Utils.print({
+                        platform: window.navigator.platform,
+                        userAgent: window.navigator.userAgent,
+                    })} <br />
                 </p>
                 <div style={{ display: "flex", gap: 8 }}>
                     <Button variant="contained" color="primary" onClick={async () => {
