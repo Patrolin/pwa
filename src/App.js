@@ -2,9 +2,21 @@ import logo from './logo.svg';
 import './App.css';
 import Utils, { BrowserName, OsName } from './utils';
 import { AddToHomescreen } from './AddToHomescreen';
-import { Button, Dialog, IconButton } from '@material-ui/core';
+import { Button, Dialog, IconButton, Typography } from '@material-ui/core';
 import AndroidIcon from '@material-ui/icons/Android';
 import CloseIcon from '@material-ui/icons/Close';
+
+const GuidancePrompt = ({ title, onClose, children }) => {
+    return <Dialog open={true}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 8px 8px 20px", gap: 8 }}>
+            <Typography variant="h6">{title}</Typography>
+            <IconButton onClick={onClose}><CloseIcon /></IconButton>
+        </div>
+        <div style={{ padding: "0px 16px 16px 20px" }}>
+            {children}
+        </div>
+    </Dialog>;
+}
 
 function App() {
     const flags = {
@@ -68,40 +80,30 @@ function App() {
                         case OsName.Iphone:
                             switch (browserName) {
                                 case BrowserName.Firefox:
-                                    return <Dialog open={true}>
-                                        {/* TODO: add ios firefox guidance image */}
-                                        Ios Firefox guidance prompt
-                                        <IconButton onClick={onClose}><CloseIcon /></IconButton>
-                                    </Dialog>;
+                                    return <GuidancePrompt title="Ios Firefox guidance prompt" onClose={onClose}>
+                                        <Typography>TODO</Typography>
+                                    </GuidancePrompt>;
                                 case BrowserName.Chrome:
-                                    return <Dialog open={true}>
-                                        {/* TODO: add ios chrome guidance image */}
-                                        Ios Chrome guidance prompt
-                                        <IconButton onClick={onClose}><CloseIcon /></IconButton>
-                                    </Dialog>;
+                                    return <GuidancePrompt title="Ios Chrome guidance prompt" onClose={onClose}>
+                                        <Typography>TODO</Typography>
+                                    </GuidancePrompt>;
                                 case BrowserName.Safari:
-                                    return <Dialog open={true}>
-                                        {/* TODO: add ios safari guidance image */}
-                                        Ios Safari guidance prompt
-                                        <IconButton onClick={onClose}><CloseIcon /></IconButton>
-                                    </Dialog>;
+                                    return <GuidancePrompt title="Ios Safari guidance prompt" onClose={onClose}>
+                                        <Typography>TODO</Typography>
+                                    </GuidancePrompt>;
                                 default:
                                     return undefined;
                             }
                         default:
                             switch (browserName) {
                                 case BrowserName.Firefox:
-                                    return <Dialog open={true}>
-                                        {/* TODO: add android firefox guidance image */}
-                                        Android Firefox guidance prompt
-                                        <IconButton onClick={onClose}><CloseIcon /></IconButton>
-                                    </Dialog>;
+                                    return <GuidancePrompt title="Android Firefox guidance prompt" onClose={onClose}>
+                                        <Typography>TODO</Typography>
+                                    </GuidancePrompt>;
                                 case BrowserName.Opera:
-                                    return <Dialog open={true}>
-                                        {/* TODO: add android opera guidance image */}
-                                        Android Opera guidance prompt
-                                        <IconButton onClick={onClose}><CloseIcon /></IconButton>
-                                    </Dialog>;
+                                    return <GuidancePrompt title="Android Opera guidance prompt" onClose={onClose}>
+                                        <Typography>TODO</Typography>
+                                    </GuidancePrompt>;
                                 default:
                                     return undefined;
                             }
