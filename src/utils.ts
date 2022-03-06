@@ -1,31 +1,25 @@
-export type BeforeInstallEventPromptOutcome = "accepted"|"dismissed";
-export type BeforeInstallEventPrompt = {
-    prompt: () => void,
-    userChoice: Promise<{ outcome: BeforeInstallEventPromptOutcome }>;
-}
-
 declare global {
     interface Window {
         chrome: any | undefined,
         opr: any | undefined,
-        deferredInstallPrompt: BeforeInstallEventPrompt|null|undefined,
-        isAppInstalled: boolean,
     }
     interface Navigator {
-        userAgentData: { brands: { brand: string }[] } | undefined,
-        standalone: any,
+        userAgentData: {
+            brands: { brand: string }[],
+            platform: string,
+        } | undefined,
     }
 }
 
-window.deferredInstallPrompt = null;
-
-window.addEventListener("beforeinstallprompt", (event) => {
-  alert(`beforeinstallprompt ${Utils.print(event)}`);
-  event.preventDefault();
-  // @ts-ignore
-  window.deferredInstallPrompt = event;
-});
-
+export enum OsName {
+    Android = "Android",
+    Ipad = "Ipad",
+    Iphone = "Iphone",
+    Windows = "Windows",
+    Mac = "Mac",
+    Linux = "Linux",
+    Unknown = "Unknown",
+}
 export enum BrowserName {
     Edge = "Edge",
     Opera = "Opera",
@@ -36,6 +30,7 @@ export enum BrowserName {
     Firefox = "Firefox",
     Safari = "Safari",
     InternetExplorer = "Internet Explorer",
+    Chromium = "Chromium",
     Unknown = "Unknown",
 }
 
@@ -45,51 +40,31 @@ class Utils {
     }
 
     // Add to homescreen
-    public static isAppInstalled() {
-        // iOS
-        if (window.navigator.standalone) return true;
-        // Android
-        if (window.matchMedia('(display-mode: standalone)').matches) return true;
-        return false;
-    }
-    public static getNativeInstallPrompt() {
-        return window.deferredInstallPrompt;
-    }
-    public static async showNativeInstallPromptIfExists(verbose: boolean = false) {
-        const nativeInstallPrompt = this.getNativeInstallPrompt();
-        alert(`Install prompt: ${Utils.print(nativeInstallPrompt)}`);
-        if (this.isValueMissing(nativeInstallPrompt)) return;
-        nativeInstallPrompt!.prompt();
-        const { outcome } = await nativeInstallPrompt!.userChoice;
-        if (verbose) alert(`Install outcome: ${Utils.print(outcome)}`);
-        window.deferredInstallPrompt = null;
-        return outcome;
-    }
-
     public static isDesktop(): boolean {
         return window.matchMedia("(hover: hover) and (pointer: fine)").matches;
     }
-    public static isChromium(): boolean {
-        return Boolean(window.chrome || (navigator.userAgentData?.brands ?? []).some(b => b.brand === "Google Chrome"));
-    }
-    public static isIos(): boolean {
-        return Boolean(/iPad|iPhone|iPod/i.test(window.navigator.userAgent));
-    }
-    public static isIpad(): boolean {
-        return Boolean(/iPad/i.test(window.navigator.userAgent));
-    }
-    public static isIphone(): boolean {
-        return Boolean(/iPhone|iPod/i.test(window.navigator.userAgent));
-    }
-    public static isAndroid(): boolean {
-        return Boolean(/Android/i.test(window.navigator.userAgent));
-    }
-    public static isSamsung(): boolean {
-        return Boolean(/SAMSUNG|Samsung|SGH-[I|N|T]|GT-[I|N]|SM-[A|N|P|T|Z]|SHV-E|SCH-[I|J|R|S]|SPH-L/i.test(window.navigator.userAgent));
+    public static getOsName(): OsName {
+        const userAgent = window.navigator.userAgent;
+        const platform = window.navigator.userAgentData?.platform || window.navigator.platform;
+        switch (true) {
+            case /Android/i.test(userAgent):
+                return OsName.Android;
+            case /iPad/i.test(userAgent) || /iPad/i.test(platform):
+                return OsName.Ipad;
+            case /iPhone|iPod/i.test(userAgent) || /iPhone|iPod/i.test(platform):
+                return OsName.Iphone;
+            case /Win32|Win64|WinCE|Windows/i.test(platform):
+                return OsName.Windows;
+            case /Macintosh|MacIntel|MacPPC|Mac68K|Darwin/i.test(platform):
+                return OsName.Mac;
+            case /Linux/i.test(platform):
+                return OsName.Linux;
+            default:
+                return OsName.Unknown;
+        }
     }
     public static getBrowserName(): BrowserName {
         const userAgent = window.navigator.userAgent;
-        const vendor = window.navigator.vendor;
         switch (true) {
             case /Edge|Edg|EdgiOS/i.test(userAgent):
                 return BrowserName.Edge;
@@ -98,7 +73,7 @@ class Utils {
             case /SamsungBrowser/i.test(userAgent):
                 return BrowserName.SamsungInternet;
             case /CriOS/i.test(userAgent):
-            case /Chrome/i.test(userAgent) && vendor === "Google Inc." && this.isChromium():
+            case /Chrome/i.test(userAgent) && (navigator.userAgentData?.brands ?? []).some(b => b.brand === "Google Chrome"):
                 return BrowserName.Chrome;
             case /Vivaldi/i.test(userAgent):
                 return BrowserName.Vivaldi;
@@ -110,6 +85,8 @@ class Utils {
                 return BrowserName.Safari;
             case /MSIE|Trident|IEMobile|WPDesktop/i.test(userAgent):
                 return BrowserName.InternetExplorer;
+            case Boolean(window.chrome):
+                return BrowserName.Chromium;
             default:
                 return BrowserName.Unknown;
         }
@@ -122,7 +99,7 @@ class Utils {
         });
     }
     public static print(value: any, depth = 1): string {
-        if (depth >= 3) return "";
+        const MAX_DEPTH = 3;
         switch (value?.constructor?.name) {
             case "String":
                 return this.format("\"%0\"", [value]);
@@ -131,13 +108,19 @@ class Utils {
             case undefined:
                 return String(value);
             case "Array":
+                if (depth >= MAX_DEPTH) return "[...]";
                 return this.format("[%0]", [value.map((v: any) => this.print(v, depth+1)).join(", ")]);
             case "Set":
+                if (depth >= MAX_DEPTH) return "{...}";
                 const valuesString = Array.from(value as Set<any>).map(v => this.print(v, depth+1)).join(", ");
                 return this.format("{%0}", [valuesString]);
             default:
-                if (value === window || value === document) return "";
-                const entriesString = Object.keys(value).map((k) => this.format("%0: %1", [this.print(k, depth+1), this.print(value[k], depth+1)])).join(", ")
+                if (depth >= MAX_DEPTH || value === window || value === document) return "{...}";
+                const keys = [
+                    ...Object.entries(Object.getOwnPropertyDescriptors(value)).filter(([k, d]) => d.enumerable).map(([k, d]) => k),
+                    ...Object.entries(Object.getOwnPropertyDescriptors(value.__proto__)).filter(([k, d]) => d.enumerable).map(([k, d]) => k),
+                ].flat();
+                const entriesString = keys.map((k) => this.format("%0: %1", [this.print(k, depth+1), this.print(value[k], depth+1)])).join(", ");
                 return this.format("{%0}", [entriesString]);
         }
     }

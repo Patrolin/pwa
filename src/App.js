@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import Utils, { BrowserName } from './utils';
+import Utils, { BrowserName, OsName } from './utils';
 import { AddToHomescreen } from './AddToHomescreen';
 import { Button, Dialog, IconButton } from '@material-ui/core';
 import AndroidIcon from '@material-ui/icons/Android';
@@ -9,31 +9,32 @@ import CloseIcon from '@material-ui/icons/Close';
 function App() {
     const flags = {
         isDesktop: Utils.isDesktop(),
-        isAndroid: Utils.isAndroid(),
-        isIos: Utils.isIos(),
-        isIpad: Utils.isIpad(),
-        isIphone: Utils.isIphone(),
-        isSamsung: Utils.isSamsung(),
-        isChromium: Utils.isChromium(),
     }
     const flagsSet = new Set(Object.entries(flags).filter(([flag, v]) => v).map(([flag, v]) => flag));
-    const VERSION = 13;
+    const VERSION = 14;
     return (
         <div className="App">
           <header className="App-header">
                 <img src={logo} className="App-logo" alt="logo" />
                 <p>
                     App version: {VERSION} <br />
-                    {Utils.getBrowserName()} {Utils.print(flagsSet)} <br />
+                    {Utils.getOsName()} {Utils.getBrowserName()} {Utils.print(flagsSet)} <br />
+                    userAgentData.platform: {Utils.print(window.navigator.userAgentData?.platform)} <br />
+                    platform: {Utils.print(window.navigator.platform)} <br />
                     window.chrome: {Utils.print(!!window.chrome)} <br />
                     window.opr: {Utils.print(!!window.opr)} <br />
                     brands: {Utils.print((navigator.userAgentData?.brands ?? []).map(b => b.brand))} <br />
-                    vendor: {Utils.print(window.navigator.vendor)} <br />
                     userAgent: {Utils.print(window.navigator.userAgent)} <br />
                 </p>
                 <div style={{ display: "flex", gap: 8 }}>
                     <Button variant="contained" color="primary" onClick={async () => {
-                        Utils.showNativeInstallPromptIfExists(true);
+                        const nativeInstallPrompt = window.deferredInstallPrompt;
+                        alert(`Install prompt: ${Utils.print(nativeInstallPrompt)}`);
+                        if (this.isValueMissing(nativeInstallPrompt)) return;
+                        nativeInstallPrompt.prompt();
+                        const { outcome } = await nativeInstallPrompt.userChoice;
+                        alert(`Install outcome: ${Utils.print(outcome)}`);
+                        window.deferredInstallPrompt = null;
                     }}>Native install</Button>
                     <Button variant="contained" color="primary" onClick={() => {
                         // eslint-disable-next-line
@@ -60,26 +61,28 @@ function App() {
                     </div>;
                 }}
                 getGuidancePrompt={(onClose) => {
-                    if (Utils.isIos()) {
-                        // TODO: add ios guidance images
-                        return undefined;
-                    }
-                    const browserName = Utils.getBrowserName();
-                    switch (browserName) {
-                        case BrowserName.Firefox:
-                            return <Dialog open={true}>
-                                {/* TODO: add firefox guidance image */}
-                                Firefox guidance prompt
-                                <IconButton onClick={onClose}><CloseIcon /></IconButton>
-                            </Dialog>;
-                        case BrowserName.Opera:
-                            return <Dialog open={true}>
-                                {/* TODO: add opera guidance image */}
-                                Opera guidance prompt
-                                <IconButton onClick={onClose}><CloseIcon /></IconButton>
-                            </Dialog>;
+                    switch (Utils.getOsName()) {
+                        case OsName.Ipad:
+                        case OsName.Iphone:
+                            // TODO: add ios guidance images
+                            return;
                         default:
-                            return undefined;
+                            switch (Utils.getBrowserName()) {
+                                case BrowserName.Firefox:
+                                    return <Dialog open={true}>
+                                        {/* TODO: add firefox guidance image */}
+                                        Firefox guidance prompt
+                                        <IconButton onClick={onClose}><CloseIcon /></IconButton>
+                                    </Dialog>;
+                                case BrowserName.Opera:
+                                    return <Dialog open={true}>
+                                        {/* TODO: add opera guidance image */}
+                                        Opera guidance prompt
+                                        <IconButton onClick={onClose}><CloseIcon /></IconButton>
+                                    </Dialog>;
+                                default:
+                                    return undefined;
+                            }
                     }
                 }}
             />
