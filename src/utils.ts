@@ -129,7 +129,7 @@ class Utils {
                     ...Object.entries(Object.getOwnPropertyDescriptors(value.constructor?.prototype ?? {})).filter(([k, d]) => d.enumerable).map(([k, d]) => k),
                 ].flat();
                 const entriesString = keys.map((k) => this.format("%0: %1", [this.print(k, depth+1), this.print(value[k], depth+1)])).join(", ");
-                return this.format("{%0}", [entriesString]);
+                return this.format("%0{%1}", [value.constructor?.name, entriesString]);
         }
     }
 }
