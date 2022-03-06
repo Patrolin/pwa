@@ -48,19 +48,20 @@ class Utils {
         const userAgent = window.navigator.userAgent;
         const platform = window.navigator.userAgentData?.platform || window.navigator.platform;
         switch (true) {
-            case /Android/i.test(userAgent):
+            case [userAgent, platform].some(v => /Android/i.test(v)):
                 return OsName.Android;
-            case /iPad/i.test(userAgent) || /iPad/i.test(platform):
+            case [userAgent, platform].some(v => /iPad/i.test(v)):
                 return OsName.Ipad;
-            case /iPhone|iPod/i.test(userAgent) || /iPhone|iPod/i.test(platform):
+            case [userAgent, platform].some(v => /iPhone|iPod/i.test(v)):
                 return OsName.Iphone;
-            case /BlackBerry/i.test(userAgent):
+            case [userAgent, platform].some(v => /BlackBerry/i.test(v)):
                 return OsName.Blackberry;
-            case /Win32|Win64|WinCE|Windows/i.test(platform):
+            case [userAgent, platform].some(v => /Win32|Win64|WinCE|Windows/i.test(v)):
                 return OsName.Windows;
-            case /Macintosh|MacIntel|MacPPC|Mac68K|Darwin/i.test(platform):
+            case [userAgent, platform].some(v => /Macintosh|MacIntel|MacPPC|Mac68K|Darwin/i.test(v)):
                 return OsName.Mac;
-            case /Linux/i.test(platform):
+            // generic
+            case [userAgent, platform].some(v => /Linux/i.test(v)):
                 return OsName.Linux;
             default:
                 return OsName.Unknown;
@@ -75,7 +76,7 @@ class Utils {
                 return BrowserName.Opera;
             case /SamsungBrowser/i.test(userAgent):
                 return BrowserName.SamsungInternet;
-            case /CriOS/i.test(userAgent):
+            case /CriOS/i.test(userAgent): // Chrome iOS
             case /Chrome/i.test(userAgent) && (navigator.userAgentData?.brands ?? []).some(b => b.brand === "Google Chrome"):
                 return BrowserName.Chrome;
             case /Vivaldi/i.test(userAgent):
@@ -88,6 +89,7 @@ class Utils {
                 return BrowserName.Safari;
             case /MSIE|Trident|IEMobile|WPDesktop/i.test(userAgent):
                 return BrowserName.InternetExplorer;
+            // generic
             case Boolean(window.chrome):
                 return BrowserName.Chromium;
             default:
