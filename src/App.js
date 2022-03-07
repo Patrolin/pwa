@@ -23,7 +23,7 @@ function App() {
         isDesktop: Utils.isDesktop(),
     }
     const flagsSet = new Set(Object.entries(flags).filter(([flag, v]) => v).map(([flag, v]) => flag));
-    const VERSION = 17;
+    const VERSION = 18;
     return (
         <div className="App">
           <header className="App-header">
@@ -63,7 +63,7 @@ function App() {
             <AddToHomescreen
                 defaultData={{ pageVisits: 0, dismissCount: 0, version: VERSION }}
                 getShouldShowAdvert={(data) => {
-                    if (data.dismissCount >= 20) return false;
+                    if (Utils.isDesktop() || data.dismissCount >= 20) return false;
                     return data.pageVisits >= (3**(data.dismissCount + 1));
                 }}
                 getAdvert={(onYes, onNo) => {

@@ -34,9 +34,6 @@ async function showNativeInstallPromptIfExists(): Promise<BeforeInstallEventProm
 function isValueMissing(value: any): boolean {
     return (value === undefined) || (value === null);
 }
-function isDesktop(): boolean {
-    return window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-}
 function isAppInstalled(): boolean {
     // iOS
     if (window.navigator.standalone) return true;
@@ -97,7 +94,7 @@ export const AddToHomescreen: React.FC<Props> = ({ defaultData, getShouldShowAdv
     const [canShowPrompt, setCanShowPrompt] = useState(false);
     useEffect(() => {
         setTimeout(() => {
-            if (isDesktop() || isAppInstalled()) return;
+            if (isAppInstalled()) return;
             const newNativePrompt = window.deferredInstallPrompt;
             setNativePrompt(newNativePrompt);
             const canShowNativePrompt = !isValueMissing(newNativePrompt);
