@@ -2,13 +2,13 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Utils from "./utils";
 
 export type BeforeInstallEventPromptOutcome = "accepted"|"dismissed";
-export type BeforeInstallEventPrompt = {
+export type _BeforeInstallEvent = {
     prompt: () => void,
     userChoice: Promise<{ outcome: BeforeInstallEventPromptOutcome }>;
 }
 declare global {
     interface Window {
-        deferredInstallPrompt: BeforeInstallEventPrompt|null|undefined,
+        deferredInstallPrompt: _BeforeInstallEvent|null|undefined,
     }
     interface Navigator {
         standalone: any,
@@ -77,7 +77,6 @@ function useAddToHomeScreenData(
 
 type Props = {
     defaultData: AddToHomescreenData,
-    maxDismissCount?: number,
     getShouldShowAdvert: (data: AddToHomescreenData) => boolean,
     getGuidancePrompt: (closeCallback: () => void) => JSX.Element|undefined|null,
     getAdvert: (yesCallback: () => void, noCallback: () => void) => JSX.Element,
@@ -86,7 +85,7 @@ type Props = {
 export const AddToHomescreen: React.FC<Props> = ({ defaultData, getShouldShowAdvert, getAdvert, getGuidancePrompt, forceShowAdvert = false }) => {
     const [data, setData, shouldShowAdvert] = useAddToHomeScreenData(defaultData, getShouldShowAdvert);
     // prompts
-    const [nativePrompt, setNativePrompt] = useState<BeforeInstallEventPrompt|null|undefined>(undefined);
+    const [nativePrompt, setNativePrompt] = useState<_BeforeInstallEvent|null|undefined>(undefined);
     const guidancePromptCloseCallback = useCallback(() => {
         setShouldShowGuidancePrompt(false);
     }, []);

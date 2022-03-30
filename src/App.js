@@ -19,18 +19,14 @@ const GuidancePrompt = ({ title, onClose, children }) => {
 }
 
 function App() {
-    const flags = {
-        isDesktop: Utils.isDesktop(),
-    }
-    const flagsSet = new Set(Object.entries(flags).filter(([flag, v]) => v).map(([flag, v]) => flag));
     const VERSION = 18;
     return (
         <div className="App">
           <header className="App-header">
                 <img src={logo} className="App-logo" alt="logo" />
                 <p>
-                    App version: {VERSION}, {Utils.getOsName()} {Utils.getBrowserName()} {Utils.print(flagsSet)} <br />
-                    desktop media: {Utils.print(window.matchMedia("(hover: hover) and (pointer: fine)").matches)}, window.chrome: {Utils.print(!!window.chrome)}, window.opr: {Utils.print(!!window.opr)} <br />
+                    App version: {VERSION}, {Utils.getOsName()} {Utils.getBrowserName()} <br />
+                    isDesktop(): {Utils.print(Utils.isDesktop())}, window.chrome: {Utils.print(!!window.chrome)}, window.opr: {Utils.print(!!window.opr)} <br />
                     userAgentData: {Utils.print({
                         platform: window.navigator.userAgentData?.platform,
                         mobile: window.navigator.userAgentData?.mobile,
