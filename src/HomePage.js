@@ -36,7 +36,8 @@ function HomePage() {
                         platform: window.navigator.platform,
                         userAgent: window.navigator.userAgent,
                     })} <br />
-                    barcode: <div style={{ display: "inline-flex", flexDirection: "column", alignItems: "flex-start", gap: 0 }}>
+                    barcode: <div style={{ display: "inline-flex", flexDirection: "column", alignItems: "flex-start", gap: 500 }}>
+                        {makeBarCode128("Wiki-0123456789-pedia")}
                         {makeBarCode128("Wikipedia")}
                         <span className="code128" style={{ paddingLeft: 10, marginLeft: 235 }}>{String.fromCharCode(120)+String.fromCharCode(211)}</span>
                         <img style={{ padding: "4px 24px", background: "#fff" }} alt='Barcode Generator TEC-IT (noncommercial)'
